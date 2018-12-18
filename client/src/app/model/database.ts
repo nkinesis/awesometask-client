@@ -7,14 +7,14 @@ export class Database {
 
     select(context, params?) {
         if (!params) {
-            var cond = "id > 0";
+            let cond = "id > 0";
             params = new Select(cond, 10);
         }
         return this.sendRequest(context.name + "Controller", "select", params);
     }
 
     submit(context) {
-        var result;
+        let result;
         if (context.selectedEntity) {
             result = this.sendRequest(context.name + "Controller", "update", context.entity);
         } else {
@@ -24,15 +24,15 @@ export class Database {
     }
 
     update(context, entity) {
-        var sEntity = entity ? entity : context.entity;
+        let sEntity = entity ? entity : context.entity;
         return this.sendRequest("TaskController", "update", sEntity);
     }
 
     delete(context, entity) {
-        var c = confirm("Are you sure you want to delete?\nThis action cannot be undone.");
+        let c = confirm("Are you sure you want to delete?\nThis action cannot be undone.");
         if (c) {
-            var idParam = "id_" + context.name.toLowerCase();
-            var params = {
+            let idParam = "id_" + context.name.toLowerCase();
+            let params = {
                 [idParam]: entity[idParam]
             };
             console.log(params);
@@ -43,14 +43,14 @@ export class Database {
     }
 
     sendRequest(cls, mtd, json) {
-        var wrapper = new Wrapper(cls, mtd, []);
+        let wrapper = new Wrapper(cls, mtd, []);
         wrapper.datalist.push(json);
-        var axios = require('axios');
+        let axios = require('axios');
         return axios.get('http://localhost:8080/TaskMgmt/Controller?data=' + encodeURIComponent(JSON.stringify(wrapper)));
     }
 
     mockSelect() {
-        var list = [
+        let list = [
             new Task("Do work", 1, 1, "20180101", 1, 0),
             new Task("Test app", 1, 1, "20190822", 2, 0),
             new Task("Code TypeScript", 1, 1, "20190111", 3, 0),
@@ -59,7 +59,7 @@ export class Database {
     }
 
     testConnection() {
-        var result = this.sendRequest("TestController", "ping", {});
+        let result = this.sendRequest("TestController", "ping", {});
         result.then(function (response) {
             alert(response.data);
         })

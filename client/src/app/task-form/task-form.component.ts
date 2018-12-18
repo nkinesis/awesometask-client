@@ -32,10 +32,10 @@ export class TaskFormComponent implements OnInit {
 
   //DB Operations
   getTasks() {
-    var context = this;
-    var cond = "id > 0 and status = 0";
-    var orderBy = "priority asc, dueDate desc, id desc";
-    var params = new Select(cond, 10, orderBy);
+    let context = this;
+    let cond = "id > 0 and status = 0";
+    let orderBy = "priority asc, dueDate desc, id desc";
+    let params = new Select(cond, 10, orderBy);
     context.db.select(context, params)
       .then(function (response) {
         context.entityList = response.data;
@@ -45,15 +45,9 @@ export class TaskFormComponent implements OnInit {
       });
   }
 
-  validate() {
-    let e = this.entity;
-    return (e.description.length > 0 && e.priority > 0 && e.date);
-  }
-
   submit() {
-    var result;
     if (this.validate()) {
-      var context = this;
+      let context = this;
       context.db.submit(context)
         .then(function (response) {
           context.clear();
@@ -68,13 +62,11 @@ export class TaskFormComponent implements OnInit {
       alert("A task must have a description, priority and due date.");
     }
     this.renderer.selectRootElement("#taskDesc").focus();
-
   }
 
   update(task) {
-    var result;
-    var context = this;
-    var sTask = task ? task : this.entity;
+    let context = this;
+    let sTask = task ? task : context.entity;
     this.db.update(context, sTask)
       .then(function (response) {
         context.clear();
@@ -88,8 +80,8 @@ export class TaskFormComponent implements OnInit {
   }
 
   delete(task) {
-    var context = this;
-    let ret = context.db.delete(this, task)
+    let context = this;
+    let ret = context.db.delete(context, task)
     if (ret !== null) {
       ret.then(function (response) {
         context.getTasks();
@@ -101,11 +93,10 @@ export class TaskFormComponent implements OnInit {
     }
   }
 
-  //Specific Operations
   setOK(task) {
-    var context = this;
+    let context = this;
     task.status = 1;
-    this.db.update(this, task)
+    context.db.update(this, task)
       .then(function (response) {
         context.clear();
         context.getTasks();
@@ -115,6 +106,12 @@ export class TaskFormComponent implements OnInit {
         context.clear();
         context.getTasks();
       });
+  }
+
+  //Other Operations
+  validate() {
+    let e = this.entity;
+    return (e.description.length > 0 && e.priority > 0 && e.date);
   }
 
   clear() {

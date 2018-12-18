@@ -30,17 +30,17 @@ export class TaskListComponent implements OnInit {
 
   //DB Operations
   getTasks() {
-    var context = this;
-    var limit = 100;
-    var cond = "id > 0 ";
+    let context = this;
+    let limit = 100;
+    let cond = "id > 0 ";
     if (context.entity.date) {
       cond += "and dueDate = '" + context.entity.date + "'";
     }
     if (context.entity.description) {
       cond += "and description like '%" + context.entity.description + "%'";
     }
-    var orderBy = "priority asc, dueDate desc, id desc";
-    var params = new Select(cond, limit, orderBy);
+    let orderBy = "priority asc, dueDate desc, id desc";
+    let params = new Select(cond, limit, orderBy);
 
     context.db.select(context, params)
       .then(function (response) {
@@ -62,9 +62,8 @@ export class TaskListComponent implements OnInit {
   }
 
   setOK(entity) {
-    console.log(entity.status);
     if (entity.status == 0){
-      var context = this;
+      let context = this;
       entity.status = 1;
       context.db.update(this, entity)
         .then(function (response) {
@@ -80,8 +79,8 @@ export class TaskListComponent implements OnInit {
   }
 
   delete(entity) {
-    var context = this;
-    var ret = context.db.delete(this, entity);
+    let context = this;
+    let ret = context.db.delete(this, entity);
     if (ret !== null){
       ret.then(function (response) {
         context.getTasks();

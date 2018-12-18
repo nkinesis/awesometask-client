@@ -15,10 +15,10 @@ export class TaskGraphsComponent implements OnInit {
   stDate: string;
   renderer: Renderer2;
 
-  public lineChartData: Array<any> = [
+  lineChartData: Array<any> = [
     { data: [1], label: 'Tasks' }
   ];
-  public lineChartLabels: Array<any> = ['Tasks'];
+  lineChartLabels: Array<any> = ['Tasks'];
   lineChartColors: Array<any> = [
     {
       backgroundColor: 'rgba(148,159,177,0.2)',
@@ -32,7 +32,7 @@ export class TaskGraphsComponent implements OnInit {
   lineChartLegend: boolean = false;
   lineChartType: string = 'line';
 
-  public constructor(rendererFactory: RendererFactory2) {
+  constructor(rendererFactory: RendererFactory2) {
     this.db = new Database();
     this.clear();
     let u = new Utils();
@@ -45,17 +45,12 @@ export class TaskGraphsComponent implements OnInit {
     this.renderer.selectRootElement("#graphDate").focus();
   }
 
-  clear() {
-    this.yAxis = [];
-    this.xAxis = [];
-    this.listRs = [];
-  }
-
+  //DB Operations
   fetchGraph() {
     this.clear();
-    var context = this;
-    var filter = { "startingDate": this.stDate };
-    var r = this.db.sendRequest("GraphController", "getPriorityAvgGraph", filter);
+    let context = this;
+    let filter = { "startingDate": this.stDate };
+    let r = this.db.sendRequest("GraphController", "getPriorityAvgGraph", filter);
     r.then(function (response) {
       for (let json of response.data) {
         context.yAxis.push(parseInt(json.avgprio));
@@ -73,10 +68,10 @@ export class TaskGraphsComponent implements OnInit {
   }
 
   fetchTable() {
-    var context = this;
+    let context = this;
     context.listRs = [];
-    var filter = { "startingDate": this.stDate };
-    var r = this.db.sendRequest("GraphController", "getPriorityIndexGraph", filter);
+    let filter = { "startingDate": this.stDate };
+    let r = this.db.sendRequest("GraphController", "getPriorityIndexGraph", filter);
     r.then(function (response) {
       for (let json of response.data) {
         context.listRs.push(json);
@@ -87,6 +82,13 @@ export class TaskGraphsComponent implements OnInit {
       });
   }
 
+  //Other operations
+  clear() {
+    this.yAxis = [];
+    this.xAxis = [];
+    this.listRs = [];
+  }
+
   randomize() {
     let _lineChartData: Array<any> = new Array(this.lineChartData.length);
     for (let i = 0; i < this.lineChartData.length; i++) {
@@ -95,7 +97,6 @@ export class TaskGraphsComponent implements OnInit {
         _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
       }
     }
-    console.log(_lineChartData);
     this.lineChartData = _lineChartData;
   }
 

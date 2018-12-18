@@ -18,19 +18,9 @@ export class UserFormComponent implements OnInit {
 
   constructor(private ms: MainService, rendererFactory: RendererFactory2) {
     this.entity = new User("", "", "");
-    this.selectedEntity =  this.entity;
+    this.selectedEntity = this.entity;
     this.db = new Database();
     this.renderer = rendererFactory.createRenderer(null, null);
-  }
-
-  fetchUserID(){
-    if (!this.entity.id_user || this.entity.id_user == 0) {
-      this.ms.getUserID().subscribe(id => this.entity.id_user = id);
-    }
-  }
-
-  ping() {
-    this.db.testConnection();
   }
 
   ngOnInit() {
@@ -39,12 +29,18 @@ export class UserFormComponent implements OnInit {
   }
 
   //DB Operations
+  fetchUserID() {
+    if (!this.entity.id_user || this.entity.id_user == 0) {
+      this.ms.getUserID().subscribe(id => this.entity.id_user = id);
+    }
+  }
+
   getUser() {
     this.fetchUserID();
-    var context = this;
-    var cond = " id = " + this.entity.id_user;
-    var orderby = " id ";
-    var params = new Select(cond, 1, orderby);
+    let context = this;
+    let cond = " id = " + this.entity.id_user;
+    let orderby = " id ";
+    let params = new Select(cond, 1, orderby);
     context.db.select(context, params)
       .then(function (response) {
         context.entity = response.data[0];
@@ -56,7 +52,7 @@ export class UserFormComponent implements OnInit {
   }
 
   submit() {
-    var context = this;
+    let context = this;
     if (this.checkPassword()) {
       context.db.submit(context)
         .then(function (response) {
@@ -68,31 +64,39 @@ export class UserFormComponent implements OnInit {
           context.getUser();
         });
     } else {
-      alert("A senha deve possuir:\n"
-        + "No mínimo 6 caracteres, maíusculas e minúsculas")
+      alert("The password MUST have:\n" +
+        "- At least 6 characters\n" +
+        "- Upper case and lower case characters\n");
+      this.renderer.selectRootElement("#userPwd").focus();
     }
     this.renderer.selectRootElement("#btnSubmit").blur();
     this.renderer.selectRootElement("#btnSubmit").innerText = "Submit";
   }
 
-  //Other operations
-  checkPassword() {
-    //return this.entity.password.length > 6
-    return true;
+  ping() {
+    this.db.testConnection();
   }
 
-  enterAction(e, field){
-    if (e.key == "Enter"){
+  //Other operations
+  checkPassword() {
+    let pwd = this.entity.password;
+    let regexp = new RegExp('(?=.*[a-z])(?=.*[A-Z])');
+    let conditions = regexp.test(pwd);
+    return pwd.length >= 6 && conditions;
+  }
+
+  enterAction(e, field) {
+    if (e.key == "Enter") {
       if (field == "name") {
         this.renderer.selectRootElement("#userPwd").focus();
       } else if (field == "pwd") {
         this.renderer.selectRootElement("#btnSubmit").focus();
       } else if (field == "btnSubmit") {
         this.renderer.selectRootElement("#btnSubmit").blur();
-      } 
+      }
       this.renderer.selectRootElement("#btnSubmit").innerText = "Submit";
     }
   }
 
-  doNothing(){};
+  doNothing() { };
 }

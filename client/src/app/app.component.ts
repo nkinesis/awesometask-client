@@ -12,12 +12,13 @@ import { MainService } from './services/mainService';
 export class AppComponent {
   title: string = "Awesome Task Manager";
   author: string = "Gabriel C. Ullmann";
+  address:string = "https://github.com/nkinesis";
   menuActive: boolean;
   userId: number = 1;
   year: number;
 
   constructor(private ms: MainService) {
-    var u = new Utils();
+    let u = new Utils();
     this.year = u.getYear();
     this.menuActive = false;
     this.ms.setUserID(this.userId);
@@ -25,7 +26,7 @@ export class AppComponent {
 
   showAbout() {
     alert(this.title + "\n" + this.author + ", " + this.year + "\n"
-      + "https://github.com/nkinesis");
+      + this.address);
   }
 
   toggle() {
