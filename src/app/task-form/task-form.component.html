@@ -1,0 +1,43 @@
+<form class="task-form" style=" width:80%;max-width:900px;margin:auto;">
+
+  <div class="form-group" style="display:none">
+    <label for="taskIdTask">task id</label>
+    <input #taskIdTask name="id_task" readonly [(ngModel)]="entity.id_task" class="form-control">
+  </div>
+  <div class="form-group" style="display:none">
+    <label for="taskIdUser">user id</label>
+    <input #taskIdUser name="id_user" readonly [(ngModel)]="entity.id_user" class="form-control">
+  </div>
+  <div class="form-group" style="display:none">
+    <label for="taskStatus">status</label>
+    <input #taskStatus name="status" readonly [(ngModel)]="entity.status" class="form-control">
+  </div>
+  <div class="form-group form-check">
+    <label for="taskDesc">Description</label>
+    <input #taskDesc id="taskDesc" name="description" (keypress)="enterAction($event, 'desc')" autofocus [(ngModel)]="entity.description" class="form-control" placeholder="your entity..."
+      maxlength="140">
+  </div>
+  <div class="form-group form-check">
+    <label for="taskPrio">Priority</label>
+    <input #taskPrio id="taskPrio" name="priority" (keypress)="enterAction($event, 'prio')" [(ngModel)]="entity.priority" class="form-control" placeholder="priority" type="number"
+      min="1" max="9">
+  </div>
+  <div class="form-group form-check">
+    <label for="taskDate">Due Date</label>
+    <input #taskDate id="taskDate" name="date" (keypress)="enterAction($event, 'date')" [(ngModel)]="entity.date" class="form-control" placeholder="date" type="date" min="2001-01-01"
+      max="2100-12-31">
+  </div>
+  <button style="display:none" (click)="doNothing();"></button>
+  <button #btnSubmit id="btnSubmit" class="btn btn-primary" (keypress)="enterAction($event, 'btnSubmit')" (click)="submit();">Submit</button> 
+  <button #btnClear id="btnClear" class="btn btn-primary" (click)="clear();">Clear</button>
+
+  <div class="spacer"></div>
+
+  <ul class="list-group task-group">
+    <a *ngFor="let entity of entityList" (click)="onSelect(entity)" class="list-group-item list-group-item-action list-group-item-info">
+      <button class="btnOK glyphicon glyphicon-ok" title="finish" (click)="setOK(entity)" aria-hidden="true"></button>
+      <button class="btnDel glyphicon glyphicon-remove" title="delete" (click)="delete(entity)" aria-hidden="true"></button>
+      {{entity.description}} on {{entity.date}}
+    </a>
+  </ul>
+</form>

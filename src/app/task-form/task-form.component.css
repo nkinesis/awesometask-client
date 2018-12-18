@@ -1,0 +1,30 @@
+.btnDel{
+    border: 1px solid transparent;
+    background: transparent;
+    color: red;
+    font-weight: bold;
+}
+
+.btnOK{
+    border: 1px solid transparent;
+    background: transparent;
+    color: darkgreen;
+    font-weight: bold;
+}
+
+
+.task-group{
+    text-align:left;
+}
+
+.spacer{
+    margin:10px;
+}
+
+.btn{
+    margin-left:5px;
+}
+
+.appTitle{
+    font-weight: bold;
+}

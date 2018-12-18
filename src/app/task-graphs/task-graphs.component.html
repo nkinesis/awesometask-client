@@ -1,0 +1,42 @@
+<!--<div style="" 
+[className]="active ? 'true' : 'false'" (click)="toggle()"></div>-->
+
+<div class="row" style="width:90%;max-width:900px;margin:auto;">
+  <div class="col-md-6">
+    <div style="display: block;">
+      <label for="graphDate">Average Task Priority (next 7 days)</label>
+      <canvas baseChart class="chart" style="margin: 0 auto 30px auto; z-index: -1; max-width:420px" width="400" height="400" [datasets]="lineChartData" [labels]="lineChartLabels"
+        [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"></canvas>
+    </div>
+  </div>
+
+  <div class="col-md-6" style="margin: 0 auto 10px auto">
+    <form class="fetch-form">
+      <div class="form-group form-check">
+        <label for="graphDate">Starting date</label>
+        <div style="margin-bottom:10px">Results for the following 7 days</div>
+        <input #graphDate id="graphDate" name="stdate" type="date" [(ngModel)]="stDate" (blur)="fetchTable()" (keypress)="enterAction($event)"
+          class="form-control" min="2001-01-01" max="2100-12-31">
+      </div>
+    </form>
+    <div style="height:345px;overflow:scroll">
+      <table class="table table-responsive table-condensed">
+        <tr>
+          <th>ID</th>
+          <th>Task</th>
+          <th>Priority</th>
+          <th>Days to deadline</th>
+          <th>Priority Index</th>
+        </tr>
+        <tr *ngFor="let task of listRs">
+          <td>{{task.id_task}}</td>
+          <td>{{task.description}}</td>
+          <td>{{task.priority}}</td>
+          <td>{{task.deadline}}</td>
+          <td>{{task.index}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</div>
