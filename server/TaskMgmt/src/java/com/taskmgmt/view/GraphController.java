@@ -37,6 +37,26 @@ public class GraphController {
         return arr.toString();
     }
 
+    public String getOverdueGraph(Parameters p) {
+        TaskDAO ed = new TaskDAO();
+        ArrayList<Object[]> resultSet = (ArrayList<Object[]>) ed.executeQuery("select id, description, priority, dueDate, ABS(DATEDIFF(dueDate, CURDATE())) as dif from task\n"
+                + "where DATEDIFF(dueDate, CURDATE()) < 0 and status = 0\n"
+                + "order by dif desc, priority asc, dueDate desc\n"
+                + "limit 100");
+        JSONArray arr = new JSONArray();
+        for (Object[] result : resultSet) {
+            JSONObject jo = new JSONObject();
+            jo.put("id_task", String.valueOf(result[0]));
+            jo.put("description", String.valueOf(result[1]));
+            jo.put("priority", String.valueOf(result[2]));
+            jo.put("deadline", String.valueOf(result[3]));
+            jo.put("overdue", String.valueOf(result[4]));
+            arr.put(jo);
+        }
+        return arr.toString();
+
+    }
+
     public String getPriorityAvgGraph(Parameters p) {
         JSONObject filters = Utils.getData(p);
         TaskDAO ed = new TaskDAO();

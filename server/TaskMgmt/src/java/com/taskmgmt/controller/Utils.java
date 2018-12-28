@@ -101,7 +101,7 @@ public class Utils {
             json.put("id_user", u.getId());
             json.put("email", u.getEmail());
             json.put("username", u.getUsername());
-            json.put("password", getMockPwd(u));
+            json.put("password", u.getPasswd());
             json.put("creationDate", u.getCreationDate().toString().substring(0, 10));
             array.put(json);
         }
