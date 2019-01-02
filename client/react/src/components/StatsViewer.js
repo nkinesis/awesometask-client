@@ -18,6 +18,20 @@ export class StatsViewer extends React.Component {
         this.createOverdueTable = this.createOverdueTable.bind(this);
     }
 
+    validateArray(arr){
+        return arr && (arr.length > 0) && arr[0] && (Object.keys(arr[0]).length > 0);
+    }
+
+    createEmptyRow(){
+        return <tr className="list-group">
+            <td>No records to show.</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    }
+
     fetchIndexTable() {
         var context = this;
         var list = [];
@@ -46,7 +60,6 @@ export class StatsViewer extends React.Component {
         var filter = { "startingDate": u.getDate() };
         var r = db.sendRequest("GraphController", "getOverdueGraph", filter);
         r.then(function (response) {
-            console.log(response);
             for (var json of response.data) {
                 list.push(json);
             }
@@ -54,9 +67,9 @@ export class StatsViewer extends React.Component {
                 listTabOverdue: list
             });
         })
-        .catch(function (error) {
-            console.log(error);
-        });
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     createIndexTable() {
@@ -67,15 +80,19 @@ export class StatsViewer extends React.Component {
             <th>Days to deadline</th>
             <th>Priority Index</th>
         </tr>;
-        var rows = this.state.listTabIndex.map((val) => {
-            return <tr key={val.id_task}>
-                <td>{val.id_task}</td>
-                <td>{val.description}</td>
-                <td>{val.priority}</td>
-                <td>{val.deadline}</td>
-                <td>{val.index}</td>
-            </tr>
-        });
+        var rows = this.createEmptyRow();
+        if (this.validateArray(this.state.listTabIndex)) {
+            rows = this.state.listTabIndex.map((val) => {
+                return <tr key={val.id_task}>
+                    <td>{val.id_task}</td>
+                    <td>{val.description}</td>
+                    <td>{val.priority}</td>
+                    <td>{val.deadline}</td>
+                    <td>{val.index}</td>
+                </tr>
+            });
+        }
+
 
         return (<div><h2>Tasks by Priority Index (next 7 days)</h2>
             <div className="tableWrapper">
@@ -91,7 +108,6 @@ export class StatsViewer extends React.Component {
     }
 
     createOverdueTable() {
-
         var header = <tr>
             <th>ID</th>
             <th>Task</th>
@@ -99,16 +115,18 @@ export class StatsViewer extends React.Component {
             <th>Due Date</th>
             <th>Days overdue</th>
         </tr>;
-        var rows = this.state.listTabOverdue.map((val) => {
-            return <tr key={val.id_task}>
-                <td>{val.id_task}</td>
-                <td>{val.description}</td>
-                <td>{val.priority}</td>
-                <td>{val.deadline}</td>
-                <td>{val.overdue}</td>
-            </tr>
-        });
-
+        var rows = this.createEmptyRow();
+        if (this.validateArray(this.state.listTabOverdue)) {
+            rows = this.state.listTabOverdue.map((val) => {
+                return <tr key={val.id_task}>
+                    <td>{val.id_task}</td>
+                    <td>{val.description}</td>
+                    <td>{val.priority}</td>
+                    <td>{val.deadline}</td>
+                    <td>{val.overdue}</td>
+                </tr>
+            });
+        }
         return (<div><h2>Tasks Overdue (last 100 tasks)</h2>
             <div className="tableWrapper">
                 <table className="table table-responsive table-condensed">

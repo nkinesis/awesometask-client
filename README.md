@@ -6,5 +6,5 @@ A task manager web application with basic chart, statistics and user management 
 * This project was bootstrapped with Create React App.
 
 # Server-side
-Using Java, Hibernate and MySQL
-
+* Using Java, Hibernate and MySQL
+* Mock server wirtten in Node.js can be found on the "test" folder
