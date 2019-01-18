@@ -91,21 +91,21 @@ export class TaskForm extends React.Component {
         this.setSelectedTask();
         return (<div>
             <div className="form-group">
-                <label>Description</label>
+                <label htmlFor="desc">Description</label>
                 <input id="desc" className="form-control"
                     type="text" onChange={e => this.formChange(e)}
                     value={this.state.objForm.description}
                     placeholder="Your task..." maxLength="140"
                 ></input>
 
-                <label>Priority</label>
+                <label htmlFor="prio">Priority</label>
                 <input id="prio" className="form-control"
                     type="number" onChange={e => this.formChange(e)}
                     value={this.state.objForm.priority}
                     max="9" min="1" placeholder="Priority from 1 to 9"
                 ></input>
 
-                <label>Due Date</label>
+                <label htmlFor="date">Due Date</label>
                 <input id="date" className="form-control"
                     type="date" onChange={e => this.formChange(e)}
                     value={this.state.objForm.date}
